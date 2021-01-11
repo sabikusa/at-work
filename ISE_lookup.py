@@ -19,7 +19,7 @@ hdr = {
 mac = input('Enter a MAC -> ')
 
 res = requests.get(url + mac, headers = hdr, verify = False)
-print(res.status_code)
+print('resopnse code :', res.status_code)
 output = xml.dom.minidom.parseString(res.text)
 print(output.toprettyxml())
 
