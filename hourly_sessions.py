@@ -72,7 +72,27 @@ class Sessions():
         self.ts = ts
         self.asa = asa
 
+    def jump(self):
+        pass
+        jp = random.choice(self.ts)
+        net_connect = ConnectHandler(**jp)
+        return "{}".format(net_connect.find_prompt())
+
+    def vpn(self):
+        pass
+        net_connect.write_channel(i)
+        sleep(1)
+        output = net_connect.read_channel()
+
+        if 'ssword' in output:
+            net_connect.write_channel(net_connect.password + '\n')
+        else:
+            
+        
+
+
     def pull(self):
+        pass
         for i in self.asa:
             jump = random.choice(self.ts)
             net_connect = ConnectHandler(**jump)
