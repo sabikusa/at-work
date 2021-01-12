@@ -73,10 +73,9 @@ class Sessions():
         self.asa = asa
 
     def jump(self):
-        pass
         jp = random.choice(self.ts)
         net_connect = ConnectHandler(**jp)
-        return "{}".format(net_connect.find_prompt())
+        print("{}".format(net_connect.find_prompt()))
 
     def vpn(self):
         pass
@@ -87,6 +86,15 @@ class Sessions():
         if 'ssword' in output:
             net_connect.write_channel(net_connect.password + '\n')
         else:
+            print('Skipping this target due to a login failure...\n')
+            net_connect.disconnect()
+
+        sleep(1)
+        return net_connect.find_prompt()
+        pwd = "Emguyth5ag"
+        net_connect.secret = pwd
+        redispatch(net_connect, device_type='cisco_asa')
+        print('Pulling status...')
             
         
 
@@ -122,15 +130,16 @@ class Sessions():
             net_connect.disconnect()
 
         
-PDC = Sessions(TSP, ASP1)
-BDC = Sessions(TSB, ASB1)
+PDC = Sessions(TSP, ASP)
+BDC = Sessions(TSB, ASB)
 
 if __name__ == '__main__':
-    PDC.pull()
+    PDC.jump()
 
 
 
 def jumpp():
+    pass
     """to enter the TS first for PDC"""
     jump = random.choice(TSP)
     net_connect = ConnectHandler(**jump)
@@ -138,6 +147,7 @@ def jumpp():
     #net_connect.disconnect()
 
 def jumpb():
+    pass
     """to enter the TS first for BDC"""
     jump = random.choice(TSB)
     net_connect = ConnectHandler(**jump)
