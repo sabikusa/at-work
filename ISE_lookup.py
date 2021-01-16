@@ -10,7 +10,7 @@ import argparse
 urllib3.disable_warnings()
 
 parser = argparse.ArgumentParser(description='MAC registration checker')
-parser.add_argument('MAC', type=str, help='MAC you wish to check')
+parser.add_argument('MAC', type=str, help='put MAC you wish to check')
 arg = parser.parse_args()
 
 url = 'https://szlnm189dha:9060/ers/config/endpoint/name/'
