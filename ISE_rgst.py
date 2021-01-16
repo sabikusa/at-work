@@ -29,13 +29,13 @@ headers = {
 
 def main():
     args = sys.argv
-    for i, arg in enumerate(args):
+    for ise, arg in enumerate(args):
         ep = f"<ns4:endpoint><groupId>9d934d30-644c-11ea-a8ef-12e4691882e8</groupId><mac>{ise}</mac>\
             <staticGroupAssignment>true</staticGroupAssignment>\
             <staticProfileAssignment>false</staticProfileAssignment></ns4:endpoint>"
         payload += ep
         print('-' * 30)
-        print('MAC{:02}'.format(i))
+        print('MAC{:02}'.format(ise))
 
     payload += payload2
 
