@@ -27,13 +27,14 @@ def main():
     resourceMediaType="vnd.com.cisco.ise.identity.endpoint.1.0+xml" xmlns:ns4="identity.ers.ise.cisco.com" xmlns:xsi=\
         "http://www.w3.org/2001/XMLSchema-instance"><ns4:resourcesList>'
     payload2 = "</ns4:resourcesList></ns4:endpointBulkRequest>"
-    for ise in enumerate(args):
+    for ise, arg in enumerate(args):
         ep = f"<ns4:endpoint><groupId>9d934d30-644c-11ea-a8ef-12e4691882e8</groupId><mac>{ise}</mac>\
             <staticGroupAssignment>true</staticGroupAssignment>\
             <staticProfileAssignment>false</staticProfileAssignment></ns4:endpoint>"
         payload += ep
         print('-' * 30)
-        print('MAC{:02}'.format(ise))
+        print('#{:02}'.format(ise))
+        print('MAC:', arg)
 
     payload += payload2
 
