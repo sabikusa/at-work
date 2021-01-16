@@ -22,7 +22,7 @@ hdr = {
 
 
 def check(MAC):
-	res = requests.get(url + MAC, headers = hdr, verify = False)
+        res = requests.get(url + MAC, headers = hdr, verify = False)
         print('resopnse code :', res.status_code)
         output = xml.dom.minidom.parseString(res.text)
         print(output.toprettyxml())
