@@ -8,6 +8,7 @@ from datetime import datetime
 import xmltodict
 from pprint import pprint
 import sys
+from lxml import etree as et
 
 #disabling SSL error
 urllib3.disable_warnings()
@@ -45,9 +46,11 @@ def main():
     inquiry = requests.get(response.headers['Location'], headers = headers, verify = False)
 
     print("response_status = ", response.status_code)
+    output = et.parse(inquiry)
+    print(et.tostring(output, pretty_print=True))
 
-    doc = xmltodict.parse(inquiry.text)
-    pprint(doc['ns2:bulkStatus']['ns2:resourceStatus']['@id'])
+    # doc = xmltodict.parse(inquiry.text)
+    # pprint(doc['ns2:bulkStatus']['ns2:resourceStatus']['@id'])
 
 if __name__ == '__main__':
     main()
