@@ -15,12 +15,6 @@ urllib3.disable_warnings()
 #URI to call API to
 url = "https://szlnm189ata:9060/ers/config/endpoint/bulk"
 
-payload = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:endpointBulkRequest operationType="create"\
-    resourceMediaType="vnd.com.cisco.ise.identity.endpoint.1.0+xml" xmlns:ns4="identity.ers.ise.cisco.com" xmlns:xsi=\
-        "http://www.w3.org/2001/XMLSchema-instance"><ns4:resourcesList>'
-
-payload2 = "</ns4:resourcesList></ns4:endpointBulkRequest>"
-
 headers = {
   'Accept': 'application/xml',
   'Authorization': 'Basic ZXJzYWRtaW46RW1ndXl0aDVhZw==',
@@ -29,6 +23,10 @@ headers = {
 
 def main():
     args = sys.argv
+    payload = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:endpointBulkRequest operationType="create"\
+    resourceMediaType="vnd.com.cisco.ise.identity.endpoint.1.0+xml" xmlns:ns4="identity.ers.ise.cisco.com" xmlns:xsi=\
+        "http://www.w3.org/2001/XMLSchema-instance"><ns4:resourcesList>'
+    payload2 = "</ns4:resourcesList></ns4:endpointBulkRequest>"
     for ise in enumerate(args):
         ep = f"<ns4:endpoint><groupId>9d934d30-644c-11ea-a8ef-12e4691882e8</groupId><mac>{ise}</mac>\
             <staticGroupAssignment>true</staticGroupAssignment>\
