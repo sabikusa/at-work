@@ -22,11 +22,10 @@ hdr = {
 
 
 def check(MAC):
-        for i in MAC:
-                res = requests.get(url + i, headers = hdr, verify = False)
-                print('resopnse code :', res.status_code)
-                output = xml.dom.minidom.parseString(res.text)
-                print(output.toprettyxml())
+	res = requests.get(url + MAC, headers = hdr, verify = False)
+        print('resopnse code :', res.status_code)
+        output = xml.dom.minidom.parseString(res.text)
+        print(output.toprettyxml())
 
 if __name__ == '__main__':
         check(arg.MAC)
