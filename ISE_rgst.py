@@ -6,9 +6,7 @@ import xml.dom.minidom
 import time
 from datetime import datetime
 import xmltodict
-from pprint import pprint
 import sys
-from lxml import etree as et
 
 #disabling SSL error
 urllib3.disable_warnings()
@@ -29,7 +27,7 @@ def main():
         "http://www.w3.org/2001/XMLSchema-instance"><ns4:resourcesList>'
     payload2 = "</ns4:resourcesList></ns4:endpointBulkRequest>"
     for ise, arg in enumerate(args):
-        ep = f"<ns4:endpoint><groupId>9d934d30-644c-11ea-a8ef-12e4691882e8</groupId><mac>{ise}</mac>\
+        ep = f"<ns4:endpoint><groupId>9d934d30-644c-11ea-a8ef-12e4691882e8</groupId><mac>{arg}</mac>\
             <staticGroupAssignment>true</staticGroupAssignment>\
             <staticProfileAssignment>false</staticProfileAssignment></ns4:endpoint>"
         payload += ep
@@ -44,13 +42,10 @@ def main():
 
     # getting a bulk status based on the response header from ISE
     inquiry = requests.get(response.headers['Location'], headers = headers, verify = False)
+    output = xml.dom.minidom.parseString(inquiry.text)
 
-    print("response_status = ", response.status_code)
-    output = et.parse(inquiry)
-    print(et.tostring(output, pretty_print=True))
-
-    # doc = xmltodict.parse(inquiry.text)
-    # pprint(doc['ns2:bulkStatus']['ns2:resourceStatus']['@id'])
+    print("-" * 30 + "\n\nresponse_status = ", response.status_code, "\n")
+    print(output.toprettyxml())
 
 if __name__ == '__main__':
     main()
