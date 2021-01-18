@@ -25,7 +25,8 @@ def check(MAC):
         res = requests.get(url + MAC, headers = hdr, verify = False)
         print('resopnse code :', res.status_code)
         output = xml.dom.minidom.parseString(res.text)
-        print(output.toprettyxml())
+        prett = output.toprettyxml()
+        print(prett)
 
 if __name__ == '__main__':
         check(arg.MAC)
