@@ -46,7 +46,7 @@ def main():
     output = xml.dom.minidom.parseString(inquiry.text)
     prett = output.toprettyxml()
 
-    print("-" * 30 + "\n\nresponse_status = ", response.status_code, "\n")
+    print("-" * 30 + "\n" + str(datetime.now()) + "\nresponse_status = ", response.status_code, "\n")
     print(prett)
 
 if __name__ == '__main__':
