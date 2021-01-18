@@ -37,15 +37,17 @@ def main():
 
     payload += payload2
 
+
     # calling an API to ISE with the parameter
     response = requests.put(url, headers = headers, data = payload, verify = False)
 
     # getting a bulk status based on the response header from ISE
     inquiry = requests.get(response.headers['Location'], headers = headers, verify = False)
     output = xml.dom.minidom.parseString(inquiry.text)
+    prett = output.toprettyxml()
 
     print("-" * 30 + "\n\nresponse_status = ", response.status_code, "\n")
-    print(output.toprettyxml())
+    print(prett)
 
 if __name__ == '__main__':
     main()
