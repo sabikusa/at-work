@@ -26,7 +26,7 @@ def main():
     resourceMediaType="vnd.com.cisco.ise.identity.endpoint.1.0+xml" xmlns:ns4="identity.ers.ise.cisco.com" xmlns:xsi=\
         "http://www.w3.org/2001/XMLSchema-instance"><ns4:resourcesList>'
     payload2 = "</ns4:resourcesList></ns4:endpointBulkRequest>"
-    for ise, arg in enumerate(args):
+    for ise, arg in enumerate(args[1:]):
         ep = f"<ns4:endpoint><groupId>f3906a70-98b2-11ea-8f5c-aa149ccc3800</groupId><mac>{arg}</mac>\
             <staticGroupAssignment>true</staticGroupAssignment>\
             <staticProfileAssignment>false</staticProfileAssignment></ns4:endpoint>"
