@@ -21,6 +21,7 @@ headers = {
 }
 
 def main():
+""" simple MAC registration function """
     args = sys.argv
     payload = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns4:endpointBulkRequest operationType="create"\
     resourceMediaType="vnd.com.cisco.ise.identity.endpoint.1.0+xml" xmlns:ns4="identity.ers.ise.cisco.com" xmlns:xsi=\
