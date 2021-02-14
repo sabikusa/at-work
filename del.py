@@ -34,9 +34,7 @@ def Deletion(MAC):
     Del = requests.delete(url2 + delmac, headers = hdr, verify = False)
     print("Respons code = ", Del.status_code)
 
-    #print(rem['ERSEndPoint']['id'])
-
-
+    
 if __name__ == "__main__":
     Deletion(arg.MAC)
 
