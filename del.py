@@ -3,7 +3,6 @@
 import requests
 import urllib3
 import xml.dom.minidom
-import time
 from datetime import datetime
 import xmltodict
 import sys
@@ -36,6 +35,7 @@ def Deletion(MAC):
 
     
 if __name__ == "__main__":
+    print(str(datetime.now() + '\n')
     Deletion(arg.MAC)
 
 

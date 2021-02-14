@@ -1,17 +1,16 @@
 #!usr/bin/env python3
 
+from datetime import datetime
+import sys
+import xml.dom.minidom
 import requests
 import urllib3
-import xml.dom.minidom
-import time
-from datetime import datetime
-import xmltodict
-import sys
 
-#disabling SSL error
+
+# disabling SSL error
 urllib3.disable_warnings()
 
-#URI to call API to
+# URI to call API to
 url = "https://szlnm189dha:9060/ers/config/endpoint/bulk"
 
 headers = {
@@ -52,6 +51,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
 
 
 
