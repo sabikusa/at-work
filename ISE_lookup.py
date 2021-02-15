@@ -22,13 +22,18 @@ hdr = {
 
 
 def check(MAC):
+    """ MAC lookup tool """
+    try:
         res = requests.get(url + MAC, headers = hdr, verify = False)
         print('resopnse code :', res.status_code)
         output = xml.dom.minidom.parseString(res.text)
         prett = output.toprettyxml()
         print(prett)
+    except xml.parsers.expat.ExpatError:
+        pass
+
 
 if __name__ == '__main__':
-        check(arg.MAC)
+    check(arg.MAC)
 
 
