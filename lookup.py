@@ -30,7 +30,6 @@ def check(MAC):
         prett = output.toprettyxml()
         print(prett)
     except xml.parsers.expat.ExpatError:
-        pass
 
 
 if __name__ == '__main__':
