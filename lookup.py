@@ -3,6 +3,7 @@ import requests
 import urllib3
 import xml.dom.minidom
 import argparse
+import xmltodict
 
 '''This script is simple API caller for MAC lookup to ISE'''
 
@@ -20,6 +21,7 @@ hdr = {
         'Content-Type': 'application/xml'
         }
 
+url2 = 'https://szlnm189dha:9060/ers/config/endpoint/endpointgroup/'
 
 def check(MAC):
     """ MAC lookup tool """
@@ -28,7 +30,8 @@ def check(MAC):
         print('response code :', res.status_code)
         output = xml.dom.minidom.parseString(res.text)
         prett = output.toprettyxml()
-        print(prett)
+        group = requests.get(url2 + prett['groupId'], headers = hdr, verify = False)
+        print(prett, "\n" + group)
     except xml.parsers.expat.ExpatError:
         pass
 
