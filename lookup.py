@@ -32,7 +32,7 @@ def check(MAC):
         prett = output.toprettyxml()
         groupid = xmltodict.parse(prett)['groupId']
         group = requests.get(url2 + groupid , headers = hdr, verify = False)
-        print(prett, "\n" + group)
+        print(prett, "\n" + "Identify Group : " + "\n" + group)
     except xml.parsers.expat.ExpatError:
         pass
 
