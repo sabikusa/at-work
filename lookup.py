@@ -30,7 +30,8 @@ def check(MAC):
         print('response code :', res.status_code)
         output = xml.dom.minidom.parseString(res.text)
         prett = output.toprettyxml()
-        group = requests.get(url2 + prett['groupId'], headers = hdr, verify = False)
+        groupid = xmltodict.parse(prett)['groupId']
+        group = requests.get(url2 + groupid , headers = hdr, verify = False)
         print(prett, "\n" + group)
     except xml.parsers.expat.ExpatError:
         pass
