@@ -3,9 +3,7 @@
 import requests
 import urllib3
 import xml.dom.minidom
-import time
 from datetime import datetime
-import xmltodict
 import sys
 
 #disabling SSL error
