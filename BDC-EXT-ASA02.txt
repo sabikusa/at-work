@@ -1,0 +1,737 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2021.04.27 16:24:13 =~=~=~=~=~=~=~=~=~=~=~=
+sh run
+: Saved
+
+: 
+: Serial Number: JAD235107EV
+: Hardware:   FPR-2140, 14852 MB RAM, CPU MIPS 1800 MHz, 1 CPU (16 cores)
+:
+ASA Version 9.8(4)32 
+!
+hostname BDC-EXT-ASA02
+enable password $sha512$5000$sBACDO8bH5oqYoyDBynTyQ==$ufXBURYLMN2+HQIoktzZgQ== pbkdf2
+!
+license smart
+ feature tier standard
+ feature context 1
+ feature strong-encryption
+names
+no mac-address auto
+ip local pool SysDvlpUserPool_BDC 10.67.108.0-10.67.111.255 mask 255.255.252.0
+ip local pool SysInfrUserPool_BDC 10.67.119.128-10.67.119.255 mask 255.255.255.128
+ip local pool SysOfsUserPool_BDC 10.67.117.224-10.67.117.255 mask 255.255.255.224
+ip local pool SysProdUserPool_BDC 10.67.116.96-10.67.116.127 mask 255.255.255.224
+ip local pool GeneralUserPool_BDC 10.67.224.0-10.67.255.255 mask 255.255.224.0
+
+!
+interface Port-channel1
+ nameif outside
+ security-level 0
+ ip address 10.161.49.133 255.255.255.224 
+!
+interface Port-channel2
+ nameif inside
+ security-level 100
+ ip address 10.161.49.100 255.255.255.224 
+!
+interface Ethernet1/1
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/2
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/3
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/4
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/5
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/6
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/7
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/8
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/9
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/10
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/11
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/12
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/13
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/14
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/15
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Ethernet1/16
+ shutdown
+ no nameif
+ no security-level
+ no ip address
+!
+interface Management1/1
+ management-only
+ nameif management
+ security-level 100
+ ip address 10.161.50.14 255.255.255.0 
+!
+ftp mode passive
+dns domain-lookup inside
+dns domain-lookup management
+dns server-group DefaultDNS
+ name-server 10.17.2.15 
+ name-server 10.161.0.250 
+ name-server 10.17.2.16 
+same-security-traffic permit intra-interface
+object network obj_any
+ subnet 0.0.0.0 0.0.0.0
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny icmp any any 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny udp any any eq domain 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any any eq domain 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.17.49.101 eq 8443 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.17.49.102 eq 8443 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.17.49.103 eq 8443 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.161.49.101 eq 8443 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.161.49.102 eq 8443 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.161.49.103 eq 8443 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.17.49.101 eq 8905 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.17.49.102 eq 8905 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.17.49.103 eq 8905 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.161.49.101 eq 8905 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.161.49.102 eq 8905 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 10.161.49.103 eq 8905 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 72.163.1.80 eq www 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any any eq 88 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny udp any any eq 88 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any any eq ldap 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny udp any any eq 389 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 13.107.4.52 eq www 
+access-list POSTURE_UNKNOWN_ALLOW.in extended deny tcp any host 13.107.4.52 eq https 
+access-list POSTURE_UNKNOWN_ALLOW.in extended permit ip any any 
+access-list Split-Tunnel-List remark *** O365 SharePoint and OneDrive *** 
+access-list Split-Tunnel-List standard permit 13.107.136.0 255.255.252.0 
+access-list Split-Tunnel-List standard permit 40.108.128.0 255.255.128.0 
+access-list Split-Tunnel-List standard permit 52.104.0.0 255.252.0.0 
+access-list Split-Tunnel-List standard permit 104.146.128.0 255.255.128.0 
+access-list Split-Tunnel-List standard permit 150.171.40.0 255.255.252.0 
+access-list Split-Tunnel-List remark *** O365 Skype and MS Teams *** 
+access-list Split-Tunnel-List standard permit 23.40.62.0 255.255.255.0 
+access-list Split-Tunnel-List standard permit 211.131.224.0 255.255.255.0 
+access-list Split-Tunnel-List standard permit 13.107.64.0 255.255.192.0 
+access-list Split-Tunnel-List standard permit 52.112.0.0 255.252.0.0 
+access-list Split-Tunnel-List standard permit host 13.70.151.216 
+access-list Split-Tunnel-List standard permit host 13.71.127.197 
+access-list Split-Tunnel-List standard permit host 13.72.245.115 
+access-list Split-Tunnel-List standard permit host 13.73.1.120 
+access-list Split-Tunnel-List standard permit host 13.75.126.169 
+access-list Split-Tunnel-List standard permit host 13.89.240.113 
+access-list Split-Tunnel-List standard permit 13.107.3.0 255.255.255.0 
+access-list Split-Tunnel-List standard permit host 51.140.155.234 
+access-list Split-Tunnel-List standard permit host 51.140.203.190 
+access-list Split-Tunnel-List standard permit host 51.141.51.76 
+access-list Split-Tunnel-List standard permit host 52.163.126.215 
+access-list Split-Tunnel-List standard permit host 52.170.21.67 
+access-list Split-Tunnel-List standard permit host 52.172.185.18 
+access-list Split-Tunnel-List standard permit host 52.178.94.2 
+access-list Split-Tunnel-List standard permit host 52.178.161.139 
+access-list Split-Tunnel-List standard permit host 52.228.25.96 
+access-list Split-Tunnel-List standard permit host 52.238.119.141 
+access-list Split-Tunnel-List standard permit host 52.242.23.189 
+access-list Split-Tunnel-List standard permit host 52.244.160.207 
+access-list Split-Tunnel-List standard permit host 104.215.11.144 
+access-list Split-Tunnel-List standard permit host 104.215.62.195 
+access-list Split-Tunnel-List standard permit host 138.91.237.237 
+access-list Split-Tunnel-List remark *** Webex *** 
+access-list Split-Tunnel-List standard permit 64.68.96.0 255.255.224.0 
+access-list Split-Tunnel-List standard permit 66.114.160.0 255.255.240.0 
+access-list Split-Tunnel-List standard permit 66.163.32.0 255.255.224.0 
+access-list Split-Tunnel-List standard permit 170.133.128.0 255.255.192.0 
+access-list Split-Tunnel-List standard permit 173.39.224.0 255.255.224.0 
+access-list Split-Tunnel-List standard permit 173.243.0.0 255.255.240.0 
+access-list Split-Tunnel-List standard permit 207.182.160.0 255.255.224.0 
+access-list Split-Tunnel-List standard permit 209.197.192.0 255.255.224.0 
+access-list Split-Tunnel-List standard permit 216.151.128.0 255.255.224.0 
+access-list Split-Tunnel-List standard permit 114.29.192.0 255.255.224.0 
+access-list Split-Tunnel-List standard permit 210.4.192.0 255.255.240.0 
+access-list Split-Tunnel-List standard permit 69.26.176.0 255.255.240.0 
+access-list Split-Tunnel-List standard permit 62.109.192.0 255.255.192.0 
+access-list Split-Tunnel-List standard permit 69.26.160.0 255.255.240.0 
+access-list Split-Tunnel-List standard permit 150.253.128.0 255.255.128.0 
+access-list Split-Tunnel-List remark *** Kaltura *** 
+access-list Split-Tunnel-List standard permit 38.74.193.32 255.255.255.224 
+access-list Split-Tunnel-List standard permit 38.74.192.64 255.255.255.224 
+access-list Split-Tunnel-List standard permit 38.74.193.96 255.255.255.224 
+access-list Split-Tunnel-List standard permit 38.122.106.88 255.255.255.248 
+access-list Split-Tunnel-List standard permit 4.53.90.192 255.255.255.224 
+access-list Split-Tunnel-List standard permit 4.35.19.192 255.255.255.224 
+access-list Split-Tunnel-List standard permit 4.35.19.112 255.255.255.248 
+access-list Split-Tunnel-List standard permit 192.58.253.0 255.255.255.0 
+access-list Split-Tunnel-List standard permit 208.185.226.64 255.255.255.192 
+access-list Split-Tunnel-List standard permit 208.185.240.24 255.255.255.248 
+access-list Split-Tunnel-List standard permit 207.126.104.128 255.255.255.192 
+access-list Split-Tunnel-List standard permit 38.81.32.32 255.255.255.224 
+access-list Split-Tunnel-List standard permit 38.122.152.56 255.255.255.248 
+access-list Split-Tunnel-List standard permit 64.215.193.192 255.255.255.224 
+access-list Split-Tunnel-List standard permit 4.35.161.224 255.255.255.224 
+access-list Split-Tunnel-List standard permit 4.35.161.184 255.255.255.248 
+access-list Split-Tunnel-List standard permit 192.58.252.0 255.255.255.0 
+access-list Split-Tunnel-List standard permit 208.185.60.192 255.255.255.192 
+access-list Split-Tunnel-List standard permit 208.185.102.136 255.255.255.248 
+access-list Split-Tunnel-List standard permit host 54.244.189.41 
+access-list Split-Tunnel-List standard permit host 35.165.115.120 
+access-list Split-Tunnel-List standard permit host 18.136.43.157 
+access-list Split-Tunnel-List standard permit host 13.229.185.185 
+access-list Split-Tunnel-List standard permit host 18.139.59.23 
+access-list Split-Tunnel-List standard permit host 54.254.174.182 
+access-list Split-Tunnel-List standard permit host 34.208.45.238 
+access-list Split-Tunnel-List standard permit host 34.213.227.228 
+access-list Split-Tunnel-List standard permit host 34.215.156.77 
+access-list Split-Tunnel-List standard permit host 34.218.98.19 
+access-list Split-Tunnel-List standard permit host 35.160.24.29 
+access-list Split-Tunnel-List standard permit host 35.165.133.13 
+access-list Split-Tunnel-List standard permit host 35.167.137.177 
+access-list Split-Tunnel-List standard permit host 52.27.120.124 
+access-list Split-Tunnel-List standard permit host 52.39.120.239 
+access-list Split-Tunnel-List standard permit host 52.41.225.172 
+access-list Split-Tunnel-List standard permit host 52.88.100.158 
+access-list Split-Tunnel-List standard permit host 54.191.255.130 
+access-list Split-Tunnel-List standard permit host 54.244.187.246 
+access-list Split-Tunnel-List standard permit host 54.69.162.74 
+access-list Split-Tunnel-List standard permit host 20.48.8.135 
+access-list Split-Tunnel-List standard permit host 20.44.138.78 
+access-list Split-Tunnel-List remark *** Adaptiva *** 
+access-list Split-Tunnel-List standard permit host 184.29.92.189 
+access-list Split-Tunnel-List standard permit host 96.16.28.150 
+access-list Split-Tunnel-List standard permit host 96.6.25.77 
+access-list Split-Tunnel-List standard permit host 104.124.13.202 
+access-list Split-Tunnel-List standard permit host 52.185.71.28 
+access-list Split-Tunnel-List standard permit host 40.67.189.14 
+access-list Split-Tunnel-List standard permit host 40.90.247.210 
+access-list Split-Tunnel-List standard permit host 13.64.25.102 
+access-list Split-Tunnel-List standard permit host 20.45.1.107 
+access-list Split-Tunnel-List standard permit host 8.253.141.248 
+access-list Split-Tunnel-List standard permit host 8.253.154.107 
+access-list Split-Tunnel-List standard permit host 8.253.154.248 
+access-list Split-Tunnel-List standard permit host 8.251.67.254 
+access-list Split-Tunnel-List standard permit host 8.253.141.121 
+access-list Split-Tunnel-List standard permit host 8.253.154.120 
+access-list Split-Tunnel-List standard permit host 8.253.154.121 
+access-list Split-Tunnel-List standard permit host 8.253.157.120 
+access-list Split-Tunnel-List standard permit host 8.250.101.254 
+access-list Split-Tunnel-List standard permit host 8.253.140.249 
+access-list Split-Tunnel-List standard permit host 207.46.22.245 
+access-list Split-Tunnel-List standard permit host 23.221.72.202 
+access-list Split-Tunnel-List standard permit host 23.221.72.184 
+access-list Split-Tunnel-List standard permit host 23.215.131.227 
+access-list Split-Tunnel-List standard permit host 23.215.131.162 
+access-list Split-Tunnel-List standard permit host 52.159.17.76 
+access-list MET-SNMP-RO remark US-LATAM Net MGMT
+access-list MET-SNMP-RO standard permit 10.218.255.0 255.255.255.0 
+access-list MET-SNMP-RO standard permit 10.90.255.0 255.255.255.0 
+access-list MET-SNMP-RO remark EMEA Net MGMT
+access-list MET-SNMP-RO standard permit 10.64.32.0 255.255.255.0 
+access-list MET-SNMP-RO standard permit 10.65.32.0 255.255.255.0 
+access-list MET-SNMP-RO remark APAC Net MGMT
+access-list MET-SNMP-RO standard permit 10.68.10.0 255.255.255.0 
+access-list MET-SNMP-RO standard permit 10.69.10.0 255.255.255.0 
+access-list MET-SNMP-RO remark MEASA Net MGMT
+access-list MET-SNMP-RO standard permit host 10.155.32.54 
+pager lines 24
+logging enable
+logging buffered debugging
+logging trap informational
+logging host management 10.17.2.18
+logging host management 10.161.1.18
+mtu outside 1500
+mtu inside 1500
+mtu management 1500
+no failover
+no failover wait-disable
+no monitor-interface service-module 
+icmp unreachable rate-limit 1 burst-size 1
+no asdm history enable
+arp timeout 14400
+no arp permit-nonconnected
+arp rate-limit 32768
+route management 0.0.0.0 0.0.0.0 10.161.50.1 1
+route outside 0.0.0.0 0.0.0.0 10.161.49.129 1
+route inside 10.0.0.0 255.0.0.0 10.161.49.97 1
+route inside 0.0.0.0 0.0.0.0 10.161.49.97 tunneled
+timeout xlate 3:00:00
+timeout pat-xlate 0:00:30
+timeout conn 1:00:00 half-closed 0:10:00 udp 0:02:00 sctp 0:02:00 icmp 0:00:02
+timeout sunrpc 0:10:00 h323 0:05:00 h225 1:00:00 mgcp 0:05:00 mgcp-pat 0:05:00
+timeout sip 0:30:00 sip_media 0:02:00 sip-invite 0:03:00 sip-disconnect 0:02:00
+timeout sip-provisional-media 0:02:00 uauth 0:05:00 absolute
+timeout tcp-proxy-reassembly 0:01:00
+timeout floating-conn 0:00:00
+timeout conn-holddown 0:00:15
+timeout igp stale-route 0:01:10
+aaa-server RADIUS-GROUP protocol radius
+ authorize-only
+ interim-accounting-update periodic 1
+ dynamic-authorization
+aaa-server RADIUS-GROUP (inside) host 10.161.49.103
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server RADIUS-GROUP (inside) host 10.161.49.102
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server RADIUS-GROUP (inside) host 10.161.49.101
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server RADIUS-GROUP (inside) host 10.17.49.103
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server RADIUS-GROUP (inside) host 10.17.49.101
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server RADIUS-GROUP (inside) host 10.17.49.102
+ key *****
+ authentication-port 1812
+ accounting-port 1813
+aaa-server AAA-LIST protocol tacacs+
+aaa-server AAA-LIST (management) host 10.17.2.20
+ key *****
+aaa-server AAA-LIST (management) host 10.161.0.20
+ key *****
+user-identity default-domain LOCAL
+aaa authentication http console AAA-LIST 
+aaa authentication enable console AAA-LIST LOCAL
+aaa authentication ssh console AAA-LIST LOCAL
+aaa authentication login-history
+http server enable
+http 0.0.0.0 0.0.0.0 management
+snmp-server group MET-RO v3 priv 
+snmp-server user met-ro-user MET-RO v3 engineID 80000009fe4422186ac3722efef327d7d8606e9586d4d652b7 encrypted auth sha ea:75:48:c3:70:24:68:d2:61:1f:11:ba:31:0f:f2:46:1c:7c:76:5a priv aes 128 cd:e9:b4:25:05:b4:dd:af:93:83:8f:a7:54:69:13:3b 
+snmp-server host management 10.160.253.188 community ***** version 2c
+snmp-server host management 10.161.0.192 community ***** version 2c
+snmp-server host management 10.161.0.193 community ***** version 2c
+snmp-server location ###PDC/MetLife JPN Sys NW Team <MetLifeJPNSysNWTeam@metlife.co.jp>###
+snmp-server contact ###MetLife JPN Sys NW Team <MetLifeJPNSysNWTeam@metlife.co.jp>###
+snmp-server community *****
+crypto ipsec security-association pmtu-aging infinite
+crypto ca trustpoint _SmartCallHome_ServerCA
+ no validation-usage
+ crl configure
+crypto ca trustpoint DigiCert_Global_Root_G2
+ enrollment terminal
+ crl configure
+crypto ca trustpoint DigiCert_Global_CA_G2
+ enrollment terminal
+ crl configure
+crypto ca trustpoint jpra.metlife.co.jp
+ keypair jpra.metlife.co.jp
+ crl configure
+crypto ca trustpool policy
+ auto-import
+crypto ca certificate chain _SmartCallHome_ServerCA
+ certificate ca 0509
+    308205b7 3082039f a0030201 02020205 09300d06 092a8648 86f70d01 01050500 
+    3045310b 30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164 
+    6973204c 696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f 
+    6f742043 41203230 1e170d30 36313132 34313832 3730305a 170d3331 31313234 
+    31383233 33335a30 45310b30 09060355 04061302 424d3119 30170603 55040a13 
+    1051756f 56616469 73204c69 6d697465 64311b30 19060355 04031312 51756f56 
+    61646973 20526f6f 74204341 20323082 0222300d 06092a86 4886f70d 01010105 
+    00038202 0f003082 020a0282 0201009a 18ca4b94 0d002daf 03298af0 0f81c8ae 
+    4c19851d 089fab29 4485f32f 81ad321e 9046bfa3 86261a1e fe7e1c18 3a5c9c60 
+    172a3a74 8333307d 615411cb edabe0e6 d2a27ef5 6b6f18b7 0a0b2dfd e93eef0a 
+    c6b310e9 dcc24617 f85dfda4 daff9e49 5a9ce633 e62496f7 3fba5b2b 1c7a35c2 
+    d667feab 66508b6d 28602bef d760c3c7 93bc8d36 91f37ff8 db1113c4 9c7776c1 
+    aeb7026a 817aa945 83e205e6 b956c194 378f4871 6322ec17 6507958a 4bdf8fc6 
+    5a0ae5b0 e35f5e6b 11ab0cf9 85eb44e9 f80473f2 e9fe5c98 8cf573af 6bb47ecd 
+    d45c022b 4c39e1b2 95952d42 87d7d5b3 9043b76c 13f1dedd f6c4f889 3fd175f5 
+    92c391d5 8a88d090 ecdc6dde 89c26571 968b0d03 fd9cbf5b 16ac92db eafe797c 
+    adebaff7 16cbdbcd 252be51f fb9a9fe2 51cc3a53 0c48e60e bdc9b476 0652e611 
+    13857263 0304e004 362b2019 02e874a7 1fb6c956 66f07525 dc67c10e 616088b3 
+    3ed1a8fc a3da1db0 d1b12354 df44766d ed41d8c1 b222b653 1cdf351d dca1772a 
+    31e42df5 e5e5dbc8 e0ffe580 d70b63a0 ff33a10f ba2c1515 ea97b3d2 a2b5bef2 
+    8c961e1a 8f1d6ca4 6137b986 7333d797 969e237d 82a44c81 e2a1d1ba 675f9507 
+    a32711ee 16107bbc 454a4cb2 04d2abef d5fd0c51 ce506a08 31f991da 0c8f645c 
+    03c33a8b 203f6e8d 673d3ad6 fe7d5b88 c95efbcc 61dc8b33 77d34432 35096204 
+    921610d8 9e2747fb 3b21e3f8 eb1d5b02 03010001 a381b030 81ad300f 0603551d 
+    130101ff 04053003 0101ff30 0b060355 1d0f0404 03020106 301d0603 551d0e04 
+    1604141a 8462bc48 4c332504 d4eed0f6 03c41946 d1946b30 6e060355 1d230467 
+    30658014 1a8462bc 484c3325 04d4eed0 f603c419 46d1946b a149a447 3045310b 
+    30090603 55040613 02424d31 19301706 0355040a 13105175 6f566164 6973204c 
+    696d6974 6564311b 30190603 55040313 1251756f 56616469 7320526f 6f742043 
+    41203282 02050930 0d06092a 864886f7 0d010105 05000382 0201003e 0a164d9f 
+    065ba8ae 715d2f05 2f67e613 4583c436 f6f3c026 0c0db547 645df8b4 72c946a5 
+    03182755 89787d76 ea963480 1720dce7 83f88dfc 07b8da5f 4d2e67b2 84fdd944 
+    fc775081 e67cb4c9 0d0b7253 f8760707 4147960c fbe08226 93558cfe 221f6065 
+    7c5fe726 b3f73290 9850d437 7155f692 2178f795 79faf82d 26876656 3077a637 
+    78335210 58ae3f61 8ef26ab1 ef187e4a 5963ca8d a256d5a7 2fbc561f cf39c1e2 
+    fb0aa815 2c7d4d7a 63c66c97 443cd26f c34a170a f890d257 a21951a5 2d9741da 
+    074fa950 da908d94 46e13ef0 94fd1000 38f53be8 40e1b46e 561a20cc 6f588ded 
+    2e458fd6 e9933fe7 b12cdf3a d6228cdc 84bb226f d0f8e4c6 39e90488 3cc3baeb 
+    557a6d80 9924f56c 01fbf897 b0945beb fdd26ff1 77680d35 6423acb8 55a103d1 
+    4d4219dc f8755956 a3f9a849 79f8af0e b911a07c b76aed34 d0b62662 381a870c 
+    f8e8fd2e d3907f07 912a1dd6 7e5c8583 99b03808 3fe95ef9 3507e4c9 626e577f 
+    a75095f7 bac89be6 8ea201c5 d666bf79 61f33c1c e1b9825c 5da0c3e9 d848bd19 
+    a2111419 6eb2861b 683e4837 1a88b75d 965e9cc7 ef276208 e291195c d2f121dd 
+    ba174282 97718153 31a99ff6 7d62bf72 e1a3931d cc8a265a 0938d0ce d70d8016 
+    b478a53a 874c8d8a a5d54697 f22c10b9 bc5422c0 01506943 9ef4b2ef 6df8ecda 
+    f1e3b1ef df918f54 2a0b25c1 2619c452 100565d5 8210eac2 31cd2e
+  quit
+crypto ca certificate chain DigiCert_Global_Root_G2
+ certificate ca 033af1e6a711a9a0bb2864b11d09fae5
+    3082038e 30820276 a0030201 02021003 3af1e6a7 11a9a0bb 2864b11d 09fae530 
+    0d06092a 864886f7 0d01010b 05003061 310b3009 06035504 06130255 53311530 
+    13060355 040a130c 44696769 43657274 20496e63 31193017 06035504 0b131077 
+    77772e64 69676963 6572742e 636f6d31 20301e06 03550403 13174469 67694365 
+    72742047 6c6f6261 6c20526f 6f742047 32301e17 0d313330 38303131 32303030 
+    305a170d 33383031 31353132 30303030 5a306131 0b300906 03550406 13025553 
+    31153013 06035504 0a130c44 69676943 65727420 496e6331 19301706 0355040b 
+    13107777 772e6469 67696365 72742e63 6f6d3120 301e0603 55040313 17446967 
+    69436572 7420476c 6f62616c 20526f6f 74204732 30820122 300d0609 2a864886 
+    f70d0101 01050003 82010f00 3082010a 02820101 00bb37cd 34dc7b6b c9b26890 
+    ad4a75ff 46ba210a 088df519 54c9fb88 dbf3aef2 3a89913c 7ae6ab06 1a6bcfac 
+    2de85e09 2444ba62 9a7ed6a3 a87ee054 752005ac 50b79c63 1a6c30dc da1f19b1 
+    d71edefd d7e0cb94 8337aeec 1f434edd 7b2cd2bd 2ea52fe4 a9b8ad3a d499a4b6 
+    25e99b6b 00609260 ff4f2149 18f76790 ab61069c 8ff2bae9 b4e99232 6bb5f357 
+    e85d1bcd 8c1dab95 049549f3 352d96e3 496ddd77 e3fb494b b4ac5507 a98f95b3 
+    b423bb4c 6d45f0f6 a9b29530 b4fd4c55 8c274a57 147c829d cd7392d3 164a060c 
+    8c50d18f 1e09be17 a1e621ca fd83e510 bc83a50a c46728f6 7314143d 4676c387 
+    14892134 4daf0f45 0ca649a1 babb9cc5 b1338329 85020301 0001a342 3040300f 
+    0603551d 130101ff 04053003 0101ff30 0e060355 1d0f0101 ff040403 02018630 
+    1d060355 1d0e0416 04144e22 54201895 e6e36ee6 0ffafab9 12ed0617 8f39300d 
+    06092a86 4886f70d 01010b05 00038201 01006067 28946f0e 4863eb31 ddea6718 
+    d5897d3c c58b4a7f e9bedb2b 17dfb05f 73772a32 13398167 428423f2 456735ec 
+    88bff88f b0610c34 a4ae204c 84c6dbf8 35e176d9 dfa642bb c7440886 7f367424 
+    5ada6c0d 145935bd f249ddb6 1fc9b30d 472a3d99 2fbb5cbb b5d420e1 995f5346 
+    15db689b f0f330d5 3e31e28d 849ee38a dada963e 3513a55f f0f97050 70474111 
+    57194ec0 8fae06c4 9513172f 1b259f75 f2b18e99 a16f13b1 4171fe88 2ac84f10 
+    2055d7f3 1445e5e0 44f4ea87 9532930e fe5346fa 2c9dff8b 22b94bd9 0945a4de 
+    a4b89a58 dd1b7d52 9f8e5943 8881a49e 26d56fad dd0dc637 7ded0392 1be5775f 
+    76ee3c8d c45d565b a2d9666e b33537e5 32b6
+  quit
+crypto ca certificate chain DigiCert_Global_CA_G2
+ certificate ca 0c8ee0c90d6a89158804061ee241f9af
+    3082048b 30820373 a0030201 0202100c 8ee0c90d 6a891588 04061ee2 41f9af30 
+    0d06092a 864886f7 0d01010b 05003061 310b3009 06035504 06130255 53311530 
+    13060355 040a130c 44696769 43657274 20496e63 31193017 06035504 0b131077 
+    77772e64 69676963 6572742e 636f6d31 20301e06 03550403 13174469 67694365 
+    72742047 6c6f6261 6c20526f 6f742047 32301e17 0d313330 38303131 32303030 
+    305a170d 32383038 30313132 30303030 5a304431 0b300906 03550406 13025553 
+    31153013 06035504 0a130c44 69676943 65727420 496e6331 1e301c06 03550403 
+    13154469 67694365 72742047 6c6f6261 6c204341 20473230 82012230 0d06092a 
+    864886f7 0d010101 05000382 010f0030 82010a02 82010100 d3487cbe f305865d 
+    5bd52f85 4e4be086 ad15ac61 cf5baf3e 6a0a47fb 9a769160 0b8a6bcd cfdc577e 
+    60980be4 54d956ed 21cc02b6 5a815f97 6aee022f 2327b86d d4b0e706 02780b1f 
+    5ca99936 febbac1b 05fa57cd 81104067 d6308b58 35d49661 bed08c7a 979f1af9 
+    22e6142f a9c6e801 1fabf826 0fac8e4d 2c32391d 819b8d1c 65b21cdb 61a8892f 
+    60e7ebc2 4a18c46f 2ae91092 09ed17d1 002be67d ef048914 4e33a1b2 0f97879f 
+    b3a0cd2f bc2cecb8 8368313d 1fd54a90 10190b81 95d62976 51f93676 d0b7097a 
+    384ad76f 8cbf137c 39edbaae 90fc95f7 7b780936 5e74931e 25f0ffd4 adae686b 
+    c6ff0fd5 35f1556e 4849f8f8 b8ef88f8 f15e1177 aadf02b3 02030100 01a38201 
+    5a308201 56301206 03551d13 0101ff04 08300601 01ff0201 00300e06 03551d0f 
+    0101ff04 04030201 86303406 082b0601 05050701 01042830 26302406 082b0601 
+    05050730 01861868 7474703a 2f2f6f63 73702e64 69676963 6572742e 636f6d30 
+    7b060355 1d1f0474 30723037 a035a033 86316874 74703a2f 2f63726c 342e6469 
+    67696365 72742e63 6f6d2f44 69676943 65727447 6c6f6261 6c526f6f 7447322e 
+    63726c30 37a035a0 33863168 7474703a 2f2f6372 6c332e64 69676963 6572742e 
+    636f6d2f 44696769 43657274 476c6f62 616c526f 6f744732 2e63726c 303d0603 
+    551d2004 36303430 32060455 1d200030 2a302806 082b0601 05050702 01161c68 
+    74747073 3a2f2f77 77772e64 69676963 6572742e 636f6d2f 43505330 1d060355 
+    1d0e0416 0414246e 2b2dd06a 92515125 6901aa9a 47a689e7 4020301f 0603551d 
+    23041830 1680144e 22542018 95e6e36e e60ffafa b912ed06 178f3930 0d06092a 
+    864886f7 0d01010b 05000382 0101000b 398491f9 97ebaa81 af84e95a 3892fce2 
+    6c59bf36 c845a731 0311e106 c0ac32c7 5a5529da 4f4002f5 a1deb0ed dec0f8f6 
+    759d76b9 87fe4180 7acf5de3 00c65b02 e69b7862 c9dcb862 9a77ed89 08d74bc5 
+    fd43d562 2327c404 596d713f 235bead9 f2e72427 6ff49580 db962ce4 548bcfea 
+    19d97f55 99517a0e 2d183d78 5852bc63 68570bdd 44b3574a 60e6c870 705b8728 
+    6ad73b4e 524519af 24069248 111a8bae ac181257 ac03cbb8 f4bdca26 0ea7c1dd 
+    e333efc0 55300d95 594e9c03 3606f8c0 8f14999c 4d2a9ec1 e17d3baf 72a745ba 
+    1396294e 19d01a98 06f43794 17ada318 ba3eb001 0c95d629 3520357d f51060e4 
+    f768621e ec19e124 f28711ac e90880
+  quit
+crypto ca certificate chain jpra.metlife.co.jp
+ certificate 0450f95f058ae314fdbf77a1a82d4c2d
+    308206d7 308205bf a0030201 02021004 50f95f05 8ae314fd bf77a1a8 2d4c2d30 
+    0d06092a 864886f7 0d01010b 05003044 310b3009 06035504 06130255 53311530 
+    13060355 040a130c 44696769 43657274 20496e63 311e301c 06035504 03131544 
+    69676943 65727420 476c6f62 616c2043 41204732 301e170d 32303131 31323030 
+    30303030 5a170d32 31313131 36323335 3935395a 3071310b 30090603 55040613 
+    02555331 15301306 03550408 130c5065 6e6e7379 6c76616e 69613116 30140603 
+    55040713 0d436c61 726b7320 53756d6d 69743116 30140603 55040a13 0d4d6574 
+    6c696665 2c20496e 632e311b 30190603 55040313 126a7072 612e6d65 746c6966 
+    652e636f 2e6a7030 82012230 0d06092a 864886f7 0d010101 05000382 010f0030 
+    82010a02 82010100 b04616f4 7a087376 2be3c918 62a6887e 52a6730d 9dc07a81 
+    274843d2 2162e3f6 e882250a 661723c9 706a8211 856e3151 43f67795 475e94e3 
+    51091d2d 4fcf97ce 011d4011 231ffe3e 71ba6fa3 18018e3f 0b43ebb0 d503e43c 
+    659e806c 859ea29c d7c6dfdf fe3693d6 0426f0d9 7b111c9c 0b3401e6 1fa974dd 
+    38a863ad 4feb5a62 f649cc07 bef8dc11 34eeca12 ebc86235 19695584 a28a64d7 
+    c0770f73 fea1469a 802c7c21 5df93645 c01127f8 49890523 3039cb06 c43f8db0 
+    b2a97ed1 fd6d9f5d 1ee4d196 f7d2fccd a48e7d5c 380a31d6 1ded26ab 2a309cbd 
+    6b27e65c 048be5f3 987f9acd b421c51b ef889719 0e695e07 d51b4300 b8168dd0 
+    f8161b83 e66fb20f 02030100 01a38203 96308203 92301f06 03551d23 04183016 
+    8014246e 2b2dd06a 92515125 6901aa9a 47a689e7 4020301d 0603551d 0e041604 
+    1421f63e c767ee9f 0db21310 656cc1ab 1346f29a 1a3081cd 0603551d 110481c5 
+    3081c282 126a7072 612e6d65 746c6966 652e636f 2e6a7082 13706a70 72612e6d 
+    65746c69 66652e63 6f2e6a70 8213626a 7072612e 6d65746c 6966652e 636f2e6a 
+    70821f70 64632d65 78742d61 73613031 2d6f7574 2e6d6574 6c696665 2e636f2e 
+    6a70821f 7064632d 6578742d 61736130 322d6f75 742e6d65 746c6966 652e636f 
+    2e6a7082 1f626463 2d657874 2d617361 30312d6f 75742e6d 65746c69 66652e63 
+    6f2e6a70 821f6264 632d6578 742d6173 6130322d 6f75742e 6d65746c 6966652e 
+    636f2e6a 70300e06 03551d0f 0101ff04 04030205 a0301d06 03551d25 04163014 
+    06082b06 01050507 03010608 2b060105 05070302 30770603 551d1f04 70306e30 
+    35a033a0 31862f68 7474703a 2f2f6372 6c332e64 69676963 6572742e 636f6d2f 
+    44696769 43657274 476c6f62 616c4341 47322e63 726c3035 a033a031 862f6874 
+    74703a2f 2f63726c 342e6469 67696365 72742e63 6f6d2f44 69676943 65727447 
+    6c6f6261 6c434147 322e6372 6c304c06 03551d20 04453043 30370609 60864801 
+    86fd6c01 01302a30 2806082b 06010505 07020116 1c687474 70733a2f 2f777777 
+    2e646967 69636572 742e636f 6d2f4350 53300806 0667810c 01020230 7406082b 
+    06010505 07010104 68306630 2406082b 06010505 07300186 18687474 703a2f2f 
+    6f637370 2e646967 69636572 742e636f 6d303e06 082b0601 05050730 02863268 
+    7474703a 2f2f6361 63657274 732e6469 67696365 72742e63 6f6d2f44 69676943 
+    65727447 6c6f6261 6c434147 322e6372 74300c06 03551d13 0101ff04 02300030 
+    82010406 0a2b0601 0401d679 02040204 81f50481 f200f000 7600f65c 942fd177 
+    30221454 18083094 568ee34d 131933bf df0c2f20 0bcc4ef1 64e30000 0175bc46 
+    1a530000 04030047 30450221 00fbdffc 232dbb9b 42e2f207 4e64cf9d 725c068b 
+    36cfabc8 f2c361d2 d105bd3f 0b022061 f2bee31a 53d561a1 8f7366ed dfbc7580 
+    cedc21c8 2b9f9cb0 3b2cd509 2ca83100 76005cdc 4392fee6 ab4544b1 5e9ad456 
+    e61037fb d5fa47dc a17394b2 5ee6f6c7 0eca0000 0175bc46 1aa30000 04030047 
+    30450220 7cf57c00 bf4180f7 468c75c1 6c88ea83 31c3ad79 c1d9171f 65a4fd6d 
+    b9c2a0a5 022100a2 4af98c05 4d90f34b 4b64b731 84c9144c 6b748edb 5f3764f6 
+    dff3c75d 6fa93a30 0d06092a 864886f7 0d01010b 05000382 010100b2 1d133cbd 
+    849ddfd0 672b81f4 13c9496c f7e25a82 27a65724 1a2cd749 8b81134a eeb036a2 
+    73b5679c b15fdc74 ab933381 1b65f40b d7d80e98 252052d1 a1beece0 779beb37 
+    c3aa6825 009f4f0d 51a4d455 efe9d1c7 9ed62a8d b39ffc75 746a452a a670b51a 
+    eafe7767 cb43233a 41685aaa 64e20d5e 154324a0 b3ac1cb7 453d07f2 7ce15864 
+    c83539bc bcee72a2 31aa5a09 ec9a61e4 6b60af28 de1212e8 98a8a1d7 cf29a74c 
+    f4688444 76508d21 50c161a9 52eae560 14aa797d 7e26c575 b2b0b35e f730b788 
+    7c9a8dc3 e3ea3eed 3254869d 799bf069 a267497c d4602c4d a9a57335 049841d9 
+    eacf1355 fe7deae8 3b43d54f 95d43b3c b0d1dbee a05b2496 b00573
+  quit
+crypto ikev1 enable inside
+telnet timeout 5
+ssh stricthostkeycheck
+ssh 0.0.0.0 0.0.0.0 management
+ssh timeout 5
+ssh version 2
+ssh key-exchange group dh-group1-sha1
+console timeout 0
+vpn load-balancing 
+ nat 58.80.8.13
+ redirect-fqdn enable
+ priority 9
+ cluster key *****
+ cluster ip address 10.161.49.131
+ cluster encryption
+ participate
+!
+tls-proxy maximum-session 1000
+!
+threat-detection basic-threat
+threat-detection statistics access-list
+no threat-detection statistics tcp-intercept
+ssl cipher default fips
+ssl cipher tlsv1 fips
+ssl cipher tlsv1.1 fips
+ssl cipher tlsv1.2 fips
+ssl cipher dtlsv1 fips
+ssl trust-point jpra.metlife.co.jp outside
+ssl trust-point jpra.metlife.co.jp outside vpnlb-ip
+webvpn
+ enable outside
+ hsts
+  enable
+  max-age 31536000
+  include-sub-domains
+  no preload
+ portal-access-rule 1 deny code 404 any
+ anyconnect enable
+ tunnel-group-list enable
+ http-only-cookie
+ cache
+  disable
+group-policy GeneralUser internal
+group-policy GeneralUser attributes
+ dns-server value 10.17.2.15 10.161.0.250
+ vpn-idle-timeout none
+ vpn-tunnel-protocol ssl-client 
+ split-tunnel-policy excludespecified
+ split-tunnel-network-list value Split-Tunnel-List
+ default-domain value metlife.co.jp
+ address-pools value GeneralUserPool_BDC
+ webvpn
+  anyconnect ssl dtls none
+  anyconnect mtu 1250
+  anyconnect profiles value AnyConnect-Default-Profile type user
+group-policy SysDvlpUser internal
+group-policy SysDvlpUser attributes
+ dns-server value 10.17.2.15 10.161.0.250
+ vpn-idle-timeout none
+ vpn-tunnel-protocol ssl-client 
+ split-tunnel-policy excludespecified
+ split-tunnel-network-list value Split-Tunnel-List
+ default-domain value metlife.co.jp
+ address-pools value SysDvlpUserPool_BDC
+ webvpn
+  anyconnect ssl dtls none
+  anyconnect mtu 1250
+  anyconnect profiles value AnyConnect-Default-Profile type user
+group-policy SysInfrUser internal
+group-policy SysInfrUser attributes
+ dns-server value 10.17.2.15 10.161.0.250
+ vpn-idle-timeout none
+ vpn-tunnel-protocol ssl-client 
+ split-tunnel-policy excludespecified
+ split-tunnel-network-list value Split-Tunnel-List
+ default-domain value metlife.co.jp
+ address-pools value SysInfrUserPool_BDC
+ webvpn
+  anyconnect ssl dtls none
+  anyconnect mtu 1250
+  anyconnect profiles value AnyConnect-Default-Profile type user
+group-policy SysOfsUser internal
+group-policy SysOfsUser attributes
+ dns-server value 10.17.2.15 10.161.0.250
+ vpn-idle-timeout none
+ vpn-tunnel-protocol ssl-client 
+ split-tunnel-policy excludespecified
+ split-tunnel-network-list value Split-Tunnel-List
+ default-domain value metlife.co.jp
+ address-pools value SysOfsUserPool_BDC
+ webvpn
+  anyconnect ssl dtls none
+  anyconnect mtu 1250
+  anyconnect profiles value AnyConnect-Default-Profile type user
+group-policy SysProdUser internal
+group-policy SysProdUser attributes
+ dns-server value 10.17.2.15 10.161.0.250
+ vpn-idle-timeout none
+ vpn-tunnel-protocol ssl-client 
+ split-tunnel-policy excludespecified
+ split-tunnel-network-list value Split-Tunnel-List
+ default-domain value metlife.co.jp
+ address-pools value SysProdUserPool_BDC
+ webvpn
+  anyconnect ssl dtls none
+  anyconnect mtu 1250
+  anyconnect profiles value AnyConnect-Default-Profile type user
+dynamic-access-policy-record DfltAccessPolicy
+username admin password $sha512$5000$/q+oQBI6UKc1Mb69umMYTw==$X1tjUq8R+wp+3lxvJBap3g== pbkdf2 privilege 15
+tunnel-group DEFAULT-TUNNEL-GROUP type remote-access
+tunnel-group DEFAULT-TUNNEL-GROUP general-attributes
+ authentication-server-group RADIUS-GROUP
+ accounting-server-group RADIUS-GROUP
+ default-group-policy GeneralUser
+tunnel-group DEFAULT-TUNNEL-GROUP webvpn-attributes
+ group-alias "Metlife SSL-VPN" enable
+ group-url https://bjpra.metlife.co.jp enable
+ group-url https://jpra.metlife.co.jp enable
+!
+class-map inspection_default
+ match default-inspection-traffic
+!
+!
+policy-map type inspect dns preset_dns_map
+ parameters
+  message-length maximum client auto
+  message-length maximum 512
+  no tcp-inspection
+policy-map global_policy
+ class inspection_default
+  inspect dns preset_dns_map 
+  inspect ftp 
+  inspect h323 h225 
+  inspect h323 ras 
+  inspect ip-options 
+  inspect netbios 
+  inspect rsh 
+  inspect rtsp 
+  inspect skinny  
+  inspect esmtp 
+  inspect sqlnet 
+  inspect sunrpc 
+  inspect tftp 
+  inspect sip  
+  inspect xdmcp 
+  inspect icmp 
+!
+service-policy global_policy global
+prompt hostname context 
+no call-home reporting anonymous
+call-home
+ source-interface management
+ profile CiscoTAC-1
+  no active
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination address email callhome@cisco.com
+  destination transport-method http
+  subscribe-to-alert-group diagnostic
+  subscribe-to-alert-group environment
+  subscribe-to-alert-group inventory periodic monthly
+  subscribe-to-alert-group configuration periodic monthly
+  subscribe-to-alert-group telemetry periodic daily
+ profile License
+  destination address http https://tools.cisco.com/its/service/oddce/services/DDCEService
+  destination transport-method http
+app-agent heartbeat interval 1000 retry-count 3
+Cryptochecksum:3ef672cb568f0d1b43eda83e3f283869
+: end
+BDC-EXT-ASA02# 
