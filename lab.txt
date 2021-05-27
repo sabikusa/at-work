@@ -1,0 +1,11 @@
+Anyconnect Manual:
+https://dcloud-cms.cisco.com/help/install_anyconnect_pc_mac
+
+Lab Guide:
+https://dcloud-docs.cisco.com/c/r/dcloud-docs/sites/en_us/DCV/b_get_started_cisco_aci_4_2_v1_1/b_get_started_cisco_aci_4_2_v1_1.html?dc=rtp
+
+Anyconnect 接続情報です:
+dcloud-sng-anyconnect.cisco.com
+v1072user1
+95481
+
