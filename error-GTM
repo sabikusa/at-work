@@ -1,0 +1,14 @@
+C:\Users\Shinya>curl -i https://jpra.metlife.co.jp
+HTTP/1.1 504 Gateway Time-out
+Server: AkamaiGHost
+Mime-Version: 1.0
+Content-Type: text/html
+Content-Length: 176
+Expires: Sat, 05 Jun 2021 09:58:32 GMT
+Date: Sat, 05 Jun 2021 09:58:32 GMT
+Connection: keep-alive
+
+<HTML><HEAD><TITLE>Error</TITLE></HEAD><BODY>
+An error occurred while processing your request.<p>
+Reference&#32;&#35;97&#46;76c733b8&#46;1622887112&#46;258a01a2
+</BODY></HTML>
