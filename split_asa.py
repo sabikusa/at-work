@@ -2,7 +2,9 @@ import urllib.request
 import uuid
 import json
 import re
-
+from netmiko import ConnectHandler
+from getpass import getpass
+import random
 
 def print_acl_lines(acl_name, ips, section_comment):
     slash_to_mask = (
@@ -45,6 +47,10 @@ def print_acl_lines(acl_name, ips, section_comment):
             acl_name=acl_name, comment=section_comment
         )
     )
+    post.write("access-list {acl_name} remark {comment}\n".format(
+        acl_name=acl_name, comment=section_comment
+        )
+    )
     for ip in sorted(ips):
         if ":" in ip:
             # IPv6 address
@@ -53,6 +59,10 @@ def print_acl_lines(acl_name, ips, section_comment):
                     acl_name=acl_name, ip=ip
                 )
             )
+            post.write("access-list {acl_name} extended permit ip {ip} any6\n".format(
+                acl_name=acl_name, ip=ip)
+            )
+
         else:
             # IPv4 address.  Convert to a mask
             addr, slash = ip.split("/")
@@ -60,6 +70,10 @@ def print_acl_lines(acl_name, ips, section_comment):
             print(
                 "access-list {acl_name} extended permit ip {addr} {mask} any4".format(
                     acl_name=acl_name, addr=addr, mask=slash_mask
+                )
+            )
+            post.write("access-list {acl_name} extended permit ip {addr} {mask} any4\n".format(
+                acl_name=acl_name, addr=addr, mask=slash_mask
                 )
             )
 
@@ -80,22 +94,25 @@ for service in res:
         for fqdn in service.get("urls", []):
             o365_fqdns.add(fqdn)
 
+# Composing ACLs to be pushed
+post = open('splits_acl.txt', 'w')
+
 # Generate an acl for split excluding For instance
 print("##### Step 1: Create an access-list to include the split-exclude networks\n")
-acl_name = "ExcludeSass"
+acl_name = "Split-Tunnel-List"
 # O365 networks
 print_acl_lines(
     acl_name=acl_name,
     ips=o365_ips,
     section_comment="v4 and v6 networks for Microsoft Office 365",
-)
+    )
 # Microsoft Teams
 # https://docs.microsoft.com/en-us/office365/enterprise/office-365-vpn-implement-split-tunnel#configuring-and-securing-teams-media-traffic
 print_acl_lines(
-  acl_name=acl_name,
-  ips=["13.107.60.1/32"],
-  section_comment="v4 address for Microsoft Teams"
-)
+    acl_name=acl_name,
+    ips=["13.107.60.1/32"],
+    section_comment="v4 address for Microsoft Teams"
+    )
 # Cisco Webex - Per https://help.webex.com/en-us/WBX000028782/Network-Requirements-for-Webex-Teams-Services
 webex_ips = [
     "64.68.96.0/19",
@@ -119,6 +136,7 @@ print_acl_lines(
     section_comment="IPv4 and IPv6 destinations for Cisco Webex",
 )
 
+
 # Edited. April 1st 2020
 # Per advice from Microsoft they do NOT advise using dynamic split tunneling for their properties related to Office 365
 #
@@ -137,14 +155,8 @@ print("SKIP.  Per Microsoft as of April 2020 they advise not to dynamically spli
 #    )
 #)
 #
-print("\n##### Step 3: Configure the split exclude in the group-policy\n")
-print(
-    """
-group-policy GP1 attributes
- split-tunnel-policy excludespecified
- ipv6-split-tunnel-policy excludespecified
- split-tunnel-network-list value {acl_name}
-""".format(
-        acl_name=acl_name
-    )
-)
+
+# Closing the file
+post.close()
+
+print("\n##### Step 3: Push the latest ACL for the split exclude in the group-policy on ASAs\n")
